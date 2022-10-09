@@ -8,9 +8,7 @@
 
             * {
                 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            }
 
-            h1 {
                 text-align: center;
                 color: #fff;
             }
@@ -32,9 +30,21 @@
                 background-color: #000;
 
                 display: flex;
-                flex-direction: column-reverse;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
+            }
+
+            div {
+                border: 2px solid #fff;
+            }
+
+            #c2 {
+                font-size: 20px;
+            }
+
+            #c1 {
+                font-size: 30px;
             }
 
 
@@ -42,10 +52,16 @@
     </head>
 
     <body>
-        <h1>pidgeon hat (click to start music)</h1><br/>
-        <img src="./pidgeonhat.webp" alt="pidgeon hat" />
 
-        <audio src="https://spinningrat.online/assets/tunes/tunes.ogg"></audio>
+        <div>
+            <div>
+                <div>
+                    <img src="./pidgeonhat.webp" alt="pidgeon hat"/><br/>
+                </div>
+                <span id="c2">pidgeon hat (click to start music)</span>
+            </div>
+            <span id="c1"></span>
+        </div>
 
         <script>
             x = 0
@@ -53,29 +69,39 @@
             z = 0
             m = 50
             p = document.querySelector("img")
-            c = document.querySelector("h1")
+            v = document.getElementById("c1")
+            c = document.getElementById("c2")
+            a = -1
             f = () => {
                 r = Math.random()
-                console.log(r)
 
-                        if (r < (1/3)) x++
+                     if (r < (1/3)) x++
                 else if (r > (2/3)) y++
                 else                z++
 
                 p.style.transform = `rotateX(${x*m}deg) rotateY(${y*m}deg) rotateZ(${z*m}deg)`
             }
 
+            function playLoop(n) {
+                o = a.createBufferSource();  // create audio source
+                o.buffer = n;             // use decoded buffer
+                o.connect(a.destination);    // create output
+                o.loop = true;                  // takes care of perfect looping
+                o.start();                      // play...
+            }
+
             document.addEventListener("click", event => {
                 c.innerText = "pidgeon hat"
 
-                document.addEventListener("keydown", event => {
-                    if (event.code == "Space")
-                    {
-                        document.querySelector("audio").play()
-                        c.innerText = "WHAT"
-                        setInterval(f, 100)
-                    }
-                })
+                // https://stackoverflow.com/questions/46926033/create-seamless-loop-of-audio-web
+                a = new (AudioContext || webkitAudioContext)()
+
+                fetch("tunes.ogg", {mode: "cors"}).then(function(resp) {return resp.arrayBuffer()}).then(b => a.decodeAudioData(b, playLoop));
+
+                
+                c.innerText = "HOW"
+                v.innerText = "WHAT"
+                setInterval(f, 100)
             })
 
         </script>
