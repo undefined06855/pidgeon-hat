@@ -42,8 +42,10 @@
     </head>
 
     <body>
-        <h1>pidgeon hat</h1><br/>
+        <h1>pidgeon hat (click to start music)</h1><br/>
         <img src="./pidgeonhat.webp" alt="pidgeon hat" />
+
+        <audio src="https://spinningrat.online/assets/tunes/tunes.ogg"></audio>
 
         <script>
             x = 0
@@ -51,6 +53,7 @@
             z = 0
             m = 50
             p = document.querySelector("img")
+            c = document.querySelector("h1")
             f = () => {
                 r = Math.random()
                 console.log(r)
@@ -61,14 +64,20 @@
 
                 p.style.transform = `rotateX(${x*m}deg) rotateY(${y*m}deg) rotateZ(${z*m}deg)`
             }
-            document.addEventListener("keydown", event => {
-                console.log(event.code)
-                if (event.code == "Space")
-                {
-                    document.querySelector("h1").innerText = "WHAT"
-                    setInterval(f, 100)
-                }
+
+            document.addEventListener("click", event => {
+                c.innerText = "pidgeon hat"
+
+                document.addEventListener("keydown", event => {
+                    if (event.code == "Space")
+                    {
+                        document.querySelector("audio").play()
+                        c.innerText = "WHAT"
+                        setInterval(f, 100)
+                    }
+                })
             })
+
         </script>
     </body>
 </html>
