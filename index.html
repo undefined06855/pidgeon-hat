@@ -15,7 +15,7 @@
 
             img {
                 perspective: 1000px;
-                transition: transform 200ms linear;
+                transition: transform 200ms linear, scale 15000s linear;
                 width: 35vw;
                 height: 35vw;
             }
@@ -54,6 +54,10 @@
                 font-weight: bolder;
             }
 
+            .scale {
+                scale: 1000;
+            }
+
 
         </style>
     </head>
@@ -83,11 +87,6 @@
                      if (r < (1/3)) x++
                 else if (r > (2/3)) y++
                 else                z++
-                
-                if (x > 360) x -= 360
-                if (y > 360) y -= 360
-                if (z > 360) z -= 360
-                
 
                 p.style.transform = `rotateX(${x*m}deg) rotateY(${y*m}deg) rotateZ(${z*m}deg)`
             }
@@ -102,6 +101,8 @@
 
             document.addEventListener("click", event => {
                 c.innerText = "pidgeon hat"
+
+                p.setAttribute("class", "scale")
 
                 // https://stackoverflow.com/questions/46926033/create-seamless-loop-of-audio-web
                 a = new (AudioContext || webkitAudioContext)()
